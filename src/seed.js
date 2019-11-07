@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const teams = require('./teams.json');
 const { Team } = require('./models');
 
-mongoose.connect('mongodb://localhost/clase07', {
+mongoose.connect('mongodb://localhost/node_mongoose_first_example', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const app = express();
 const setRoutes = require('./routes');
 
-mongoose.connect('mongodb://localhost/clase07', {
+mongoose.connect('mongodb://localhost/node_mongoose_first_example', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
