@@ -12,7 +12,7 @@ mongoose.connect('mongodb://localhost/node_mongoose_first_example', {
 
         setRoutes(app);
 
-        app.listen(3000, () => {
+        app.listen(8080, () => {
             console.log('Servidor listo para recibir conexiones');
         });
     })
