@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const GoalSchema = require('./goal.schema');
 
 module.exports = new mongoose.Schema({
     code: {
@@ -14,5 +13,8 @@ module.exports = new mongoose.Schema({
         type: mongoose.Schema.Types.String,
         required: true
     },
-    goals: [ GoalSchema ]
+    goals: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Goal'
+    }]
 });

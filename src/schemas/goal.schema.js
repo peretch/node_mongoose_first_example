@@ -12,5 +12,19 @@ module.exports = new mongoose.Schema({
     minute: {
         type: mongoose.Schema.Types.Number,
         required: true
-    }
-});
+    },
+    teamFor: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Team',
+        required: true
+    },
+    teamTo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Team',
+        required: true
+    },
+},
+{
+    timestamps: true
+}
+);

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { json } = require('body-parser');
 const { Team } = require('./models');
+const { Goal } = require('./models');
 const { makeSortCriteria, mapPayloadToUpdateObject } = require('./utils');
 
 module.exports = (app) => {
@@ -158,28 +159,15 @@ module.exports = (app) => {
 
     app.post('/teams/:teamId/goal', json(), (req, res) => {
         const teamId = req.params.teamId;
+        const goal = req.body;
 
-        const updateProps = {
-            $push: {
-                goals: req.body
-            }
-        };
-
-        const options = {
-            new: true
-        };
-
-        Team.findByIdAndUpdate(teamId, updateProps, options)
-            .lean()
+        Goal.create(goal)
             .then((doc) => {
-                if (doc) {
-                    res.json({
-                        count: 1,
+                res
+                    .status(201)
+                    .json({
                         value: doc
-                    });
-                } else {
-                    throw new Error('No hay equipo con este ID');
-                }
+                    })
             })
             .catch((error) => {
                 res
@@ -188,6 +176,7 @@ module.exports = (app) => {
                         error: error.message
                     });
             });
+
     });
 
     app.delete('/teams/:teamId/goal', json(), (req, res) => {
@@ -378,4 +367,99 @@ module.exports = (app) => {
                     });
             });
     });
+
+
+    app.get('/goals', (req, res) => {
+        Goal.find()
+            .populate('teamFor')
+            .populate('teamTo')
+            .then((doc) => {
+                res
+                    .status(201)
+                    .json({
+                        value: doc
+                    })
+            })
+            .catch((error) => {
+                res
+                    .status(400)
+                    .json({
+                        error: error.message
+                    });
+            });
+    })
+
+    app.post('/goals', json(), (req, res) => {
+        const goal = req.body;
+        // res.json(req.body);
+
+        Goal.create(goal)
+            .then((doc) => {
+                res
+                    .status(201)
+                    .json({
+                        count: 1,
+                        value: doc
+                    });
+            })
+            .catch((error) => {
+                res
+                    .status(400)
+                    .json({
+                        error: error.message
+                    });
+            });
+    });
+
+    app.patch('/goals/:goalId', json(), (req, res) => {
+        const goalId = req.params.goalId;
+        const updatePayload = req.body;
+
+        Goal.findByIdAndUpdate(goalId, updatePayload, {
+             new: true
+        })
+            .lean()
+            .then((doc) => {
+                if (doc) {
+                    res.json({
+                        count: 1,
+                        value: doc
+                    });
+                } else {
+                    throw new Error('No hay gol con el ID ingresado');
+                }
+            })
+            .catch((err) => {
+                res
+                    .status(400)
+                    .json({
+                        error: err.message
+                    });
+            });
+    });
+
+    app.delete('/goals/:goalId', (req, res) => {
+        const goalId = req.params.goalId;
+
+        Goal.findByIdAndDelete(goalId)
+            .lean()
+            .then((doc) => {
+                if (doc) {
+                    res.json({
+                        count: 1,
+                        value: doc
+                    });
+                } else {
+                    throw new Error('No hay gol con este ID');
+                }
+            })
+            .catch((error) => {
+                res
+                    .status(400)
+                    .json({
+                        error: error.message
+                    });
+            });
+    });
+
 };

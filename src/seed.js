@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const teams = require('./teams.json');
 const { Team } = require('./models');
+const { Goal } = require('./models');
 
 mongoose.connect('mongodb://localhost/node_mongoose_first_example', {
     useNewUrlParser: true,
@@ -25,3 +26,4 @@ mongoose.connect('mongodb://localhost/node_mongoose_first_example', {
     .finally(() => {
         mongoose.connection.close();
     });
+
